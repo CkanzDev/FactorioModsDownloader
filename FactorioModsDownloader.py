@@ -33,6 +33,10 @@ def option2():
         real_path = os.path.dirname(os.path.realpath(__file__))
         createFolder(real_path + '/mods')
 
+    html_text = requests.get(download_host).text
+    soup = BeautifulSoup(html_text, 'html.parser')
+    tracks = soup.find_all("a", class_="mod-dependencies-link", href=True)
+
     count = 0
     for track in tracks:
         download_file_dependencies_only(track["href"])
@@ -45,6 +49,10 @@ def option3():
         createFolder(real_path + '/mods')
 
     download_file_one_mod()
+
+    html_text = requests.get(download_host).text
+    soup = BeautifulSoup(html_text, 'html.parser')
+    tracks = soup.find_all("a", class_="mod-dependencies-link", href=True)
 
     count = 0
     for track in tracks:
