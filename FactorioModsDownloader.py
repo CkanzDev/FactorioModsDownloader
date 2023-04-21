@@ -1,5 +1,6 @@
 #CREATED BY CKANZ#
 import requests
+#import subprocess
 from bs4 import BeautifulSoup
 import wget
 import os
@@ -78,17 +79,19 @@ def find_version(mods_name):
     return file_version[0].text.strip()
 
 def download_file_one_mod():
-    file_name_replace = download_host.replace("https://mods.factorio.com/mod/", "")
-    file_name = file_name_replace.replace("/downloads", "").strip()
+    file_name_replace = download_host.replace("https://mods.factorio.com/mod/", "").strip()
+    file_name = file_name_replace.replace("/downloads", "").replace("%20", " ")
     mods_portal_url = "/mod/" + file_name
     download_url = download_hosts + "/" + file_name + "/" + find_version(mods_portal_url) + ".zip"
+    #subprocess.run(["wget", "-r", "-nc", "-P", path, download_url], shell=True)
     wget.download(download_url, out = path)
     print('Downloaded: {}'.format(file_name, download_url))
 
 
 def download_file_dependencies_only(mods_name):
-    file_name = mods_name.strip().replace("/mod/", "")
+    file_name = mods_name.strip().replace("/mod/", "").replace("%20", " ")
     download_url = download_hosts + "/" + file_name + "/" + find_version(mods_name) + ".zip"
+    #subprocess.run(["wget", "-r", "-nc", "-P", path, download_url], shell=True)
     wget.download(download_url, out = path)
     print('Downloaded: {}'.format(file_name, download_url))
 
